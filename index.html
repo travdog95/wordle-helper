@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wordle Helper</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="targetWords.js" type="module"></script>
+    <script src="script.js" type="module"></script>
+  </head>
+  <body>
+    <header class="header">Wordle Helper</header>
+    <div class="main">
+      <div class="letters">
+        <div class="letter-container">
+          <div class="letter"><input type="text" id="letter1" maxlength="1" /></div>
+          <div class="yellow-letters-input-group">
+            <div class="title">Yellow Letters</div>
+            <div class="input-row">
+              <input type="text" id="yellowLetter1" />
+              <button data-letter="1" data-add-yellow-letter1>Add</button>
+            </div>
+          </div>
+          <div class="yellow-letters" data-yellow-letters></div>
+        </div>
+        <div class="letter-container">
+          <div class="letter"><input type="text" id="letter2" maxlength="1" /></div>
+          <div class="yellow-letters-input-group">
+            <div class="title">Yellow Letters</div>
+            <div class="input-row">
+              <input type="text" id="yellowLetter2" />
+              <button data-letter="2" data-add-yellow-letter2>Add</button>
+            </div>
+          </div>
+          <div class="yellow-letters" data-yellow-letters></div>
+        </div>
+        <div class="letter-container">
+          <div class="letter"><input type="text" id="letter3" maxlength="1" /></div>
+          <div class="yellow-letters-input-group">
+            <div class="title">Yellow Letters</div>
+            <div class="input-row">
+              <input type="text" id="yellowLetter3" />
+              <button data-letter="3" data-add-yellow-letter3>Add</button>
+            </div>
+          </div>
+          <div class="yellow-letters" data-yellow-letters></div>
+        </div>
+        <div class="letter-container">
+          <div class="letter"><input type="text" id="letter4" maxlength="1" /></div>
+          <div class="yellow-letters-input-group">
+            <div class="title">Yellow Letters</div>
+            <div class="input-row">
+              <input type="text" id="yellowLetter4" />
+              <button data-letter="4" data-add-yellow-letter4>Add</button>
+            </div>
+          </div>
+          <div class="yellow-letters" data-yellow-letters></div>
+        </div>
+        <div class="letter-container">
+          <div class="letter"><input type="text" id="letter5" maxlength="1" /></div>
+          <div class="yellow-letters-input-group">
+            <div class="title">Yellow Letters</div>
+            <div class="input-row">
+              <input type="text" id="yellowLetter5" />
+              <button data-letter="5" data-add-yellow-letter5>Add</button>
+            </div>
+          </div>
+          <div class="yellow-letters" data-yellow-letters></div>
+        </div>
+      </div>
+      <div class="section-title">Potential Matches</div>
+      <div class="potential-matches" data-potential-matches></div>
+    </div>
+    <footer class="footer"></footer>
+  </body>
+</html>
