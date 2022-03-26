@@ -12,61 +12,71 @@
   <body>
     <header class="header">Wordle Helper</header>
     <div class="main">
-      <div class="letters">
-        <div class="letter-container">
-          <div class="letter"><input type="text" id="letter1" maxlength="1" /></div>
-          <div class="yellow-letters-input-group">
-            <div class="title">Yellow Letters</div>
-            <div class="input-row">
-              <input type="text" id="yellowLetter1" />
-              <button data-letter="1" data-add-yellow-letter1>Add</button>
-            </div>
-          </div>
-          <div class="yellow-letters" data-yellow-letters></div>
+      <div class="green-letters-container">
+        <div class="green-letter">
+          <input type="text" id="letter1" maxlength="1" />
         </div>
-        <div class="letter-container">
-          <div class="letter"><input type="text" id="letter2" maxlength="1" /></div>
-          <div class="yellow-letters-input-group">
-            <div class="title">Yellow Letters</div>
-            <div class="input-row">
-              <input type="text" id="yellowLetter2" />
-              <button data-letter="2" data-add-yellow-letter2>Add</button>
-            </div>
-          </div>
-          <div class="yellow-letters" data-yellow-letters></div>
+        <div class="green-letter">
+          <input type="text" id="letter2" maxlength="1" />
         </div>
-        <div class="letter-container">
-          <div class="letter"><input type="text" id="letter3" maxlength="1" /></div>
-          <div class="yellow-letters-input-group">
-            <div class="title">Yellow Letters</div>
-            <div class="input-row">
-              <input type="text" id="yellowLetter3" />
-              <button data-letter="3" data-add-yellow-letter3>Add</button>
-            </div>
-          </div>
-          <div class="yellow-letters" data-yellow-letters></div>
+        <div class="green-letter">
+          <input type="text" id="letter3" maxlength="1" />
         </div>
-        <div class="letter-container">
-          <div class="letter"><input type="text" id="letter4" maxlength="1" /></div>
-          <div class="yellow-letters-input-group">
-            <div class="title">Yellow Letters</div>
-            <div class="input-row">
-              <input type="text" id="yellowLetter4" />
-              <button data-letter="4" data-add-yellow-letter4>Add</button>
-            </div>
-          </div>
-          <div class="yellow-letters" data-yellow-letters></div>
+        <div class="green-letter">
+          <input type="text" id="letter4" maxlength="1" />
         </div>
-        <div class="letter-container">
-          <div class="letter"><input type="text" id="letter5" maxlength="1" /></div>
-          <div class="yellow-letters-input-group">
-            <div class="title">Yellow Letters</div>
-            <div class="input-row">
-              <input type="text" id="yellowLetter5" />
-              <button data-letter="5" data-add-yellow-letter5>Add</button>
+        <div class="green-letter">
+          <input type="text" id="letter5" maxlength="1" />
+        </div>
+      </div>
+      <div class="yellow-letters-container">
+        <div class="section-title">Yellow Letters</div>
+        <div class="yellow-letters-inner-container">
+          <div class="yellow-letters-input-container">
+            <div class="yellow-letters-input-row">
+              <input class="input input-small" type="text" id="yellowLetter1" maxlength="8" />
+              <button class="btn btn-small" data-letter="1" data-add-yellow-letter1>Add</button>
             </div>
+            <div class="yellow-letters" data-yellow-letters="1"></div>
           </div>
-          <div class="yellow-letters" data-yellow-letters></div>
+          <div class="yellow-letters-input-container">
+            <div class="yellow-letters-input-row">
+              <input class="input input-small" type="text" id="yellowLetter2" maxlength="8" />
+              <button class="btn btn-small" data-letter="2" data-add-yellow-letter2>Add</button>
+            </div>
+            <div class="yellow-letters" data-yellow-letters="2"></div>
+          </div>
+          <div class="yellow-letters-input-container">
+            <div class="yellow-letters-input-row">
+              <input class="input input-small" type="text" id="yellowLetter3" maxlength="8" />
+              <button class="btn btn-small" data-letter="3" data-add-yellow-letter3>Add</button>
+            </div>
+            <div class="yellow-letters" data-yellow-letters="3"></div>
+          </div>
+          <div class="yellow-letters-input-container">
+            <div class="yellow-letters-input-row">
+              <input class="input input-small" type="text" id="yellowLetter4" maxlength="8" />
+              <button class="btn btn-small" data-letter="4" data-add-yellow-letter4>Add</button>
+            </div>
+            <div class="yellow-letters" data-yellow-letters="4"></div>
+          </div>
+          <div class="yellow-letters-input-container">
+            <div class="yellow-letters-input-row">
+              <input class="input input-small" type="text" id="yellowLetter5" maxlength="8" />
+              <button class="btn btn-small" data-letter="5" data-add-yellow-letter5>Add</button>
+            </div>
+            <div class="yellow-letters" data-yellow-letters="5"></div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-gray-letters-container">
+        <div class="section-title">Dark Gray Letters</div>
+        <div class="dark-gray-letters-inner-container">
+          <div class="dark-gray-letters-input-container">
+            <input type="text" id="darkGrayLetters" class="input input-large" maxlength="8" />
+            <button data-add-dark-gray-letters class="btn btn-large">Add</button>
+          </div>
+          <div class="dark-gray-letters" data-dark-gray-letters></div>
         </div>
       </div>
       <div class="section-title">Potential Matches</div>
