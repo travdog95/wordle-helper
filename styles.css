@@ -35,6 +35,12 @@ header {
   margin: 1.5rem 0 1rem 0;
 }
 
+.button-container {
+  display: grid;
+  place-items: center;
+  margin-bottom: 2rem;
+}
+
 .green-letters-container,
 .yellow-letters-inner-container {
   display: flex;
@@ -107,6 +113,10 @@ header {
   cursor: pointer;
   color: white;
   border: none;
+}
+
+.btn:hover {
+  border: 1px solid white;
 }
 
 .btn.btn-small {
