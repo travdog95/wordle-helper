@@ -48,7 +48,7 @@ header {
   display: grid;
   place-items: center;
   width: 10rem;
-  aspect-ratio: 1/1;
+  height: 10rem;
   background-color: #528d4d;
 }
 
@@ -61,7 +61,7 @@ header {
   color: white;
   text-transform: uppercase;
   text-align: center;
-  font-size: 15vmin;
+  font-size: 8rem;
 }
 
 /* yellow letters */

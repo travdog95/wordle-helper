@@ -2,7 +2,7 @@ import { targetWords } from "./targetWords.js";
 
 //data
 let helperData = {
-  greenLetters: [],
+  greenLetters: ["", "", "", "", ""],
   yellowLetters: {
     0: [],
     1: [],
@@ -14,8 +14,11 @@ let helperData = {
   potentialMatches: [],
 };
 
+const debug = false;
+
 //HTML elements
 const potentialMatchesDiv = document.querySelector(".potential-matches");
+const totalPotentialMatchesElement = document.querySelector("[data-total-potential-matches]");
 let letterInputs = [];
 let yellowLetterInputs = [];
 let addYellowLetterButtons = [];
@@ -32,8 +35,51 @@ for (i; i < 5; i++) {
 //Event listeners
 //Green letters
 letterInputs.forEach((letterInput) => {
+  //move to next letter on keypress
+  letterInput.addEventListener("keyup", (event) => {
+    const letterNum = parseInt(event.target.dataset.letter);
+
+    if (event.key.match(/^[a-z]$/)) {
+      const nextElement =
+        letterNum === 5
+          ? document.getElementById("yellowLetter1")
+          : document.getElementById(`letter${letterNum + 1}`);
+      nextElement.focus();
+    }
+
+    if (event.key === "Backspace" || event.key === "Delete") {
+      //if first input, return
+      if (letterNum === 1) return;
+      //if current input is blank, delete the previous input
+      const prevElement = document.getElementById(`letter${letterNum - 1}`);
+      prevElement.value = "";
+      prevElement.focus();
+    }
+  });
+
+  // Find potential matches on change
   letterInput.addEventListener("change", (event) => {
-    const letter = event.target.value;
+    const letter = event.target.value.toLowerCase();
+    const letterNum = parseInt(event.target.dataset.letter);
+    const yellowLetterInput = document.getElementById(`yellowLetter${letterNum}`);
+    const yellowLetterButton = document.querySelector(`[data-add-yellow-letter${letterNum}]`);
+    //add to helperData
+    helperData.greenLetters[letterNum - 1] = letter;
+
+    //clear out any yellow letters
+    if (letter !== "") {
+      document.querySelector(`[data-yellow-letters="${letterNum}"]`).innerHTML = "";
+      helperData.yellowLetters[letterNum - 1] = [];
+
+      //Disable yellow Letters
+      yellowLetterInput.disabled = true;
+      yellowLetterButton.disabled = true;
+    } else {
+      //Enable yellow Letters
+      yellowLetterInput.disabled = false;
+      yellowLetterButton.disabled = false;
+    }
+
     findPotentialMatches();
   });
 });
@@ -74,12 +120,6 @@ addDarkGrayLettersButton.addEventListener("click", () => {
     findPotentialMatches();
   }
 });
-
-const findPotentialMatches = () => {
-  potentialMatchesDiv.innerHTML = "";
-  helperData.potentialMatches = [...["crane", "adieu"]];
-  potentialMatchesDiv.append(helperData.potentialMatches.join(", "));
-};
 
 const addYellowLetters = (input, letterNum) => {
   const yellowLettersElement = document.querySelector(`[data-yellow-letters="${letterNum}"]`);
@@ -148,4 +188,66 @@ const removeLetter = (letter, letterElement, letterNum) => {
     helperData.yellowLetters[letterNum - 1] = filteredLetters;
     letterElement.remove();
   }
+
+  findPotentialMatches();
+};
+
+const findPotentialMatches = () => {
+  potentialMatchesDiv.innerHTML = "";
+  helperData.potentialMatches = [];
+
+  targetWords.forEach((targetWord) => {
+    let i = 0;
+    let numGreenMatches = 0;
+    let wordHasAllYellowLetters = true;
+    let wordHasNoDarkGrayLetters = true;
+
+    //before iterating through the letters of the word, make sure word has all yellow letters and none of the dark gray letters
+    const yellowLetters = combineYellowLetters();
+
+    yellowLetters.forEach((yellowLetter) => {
+      if (!targetWord.includes(yellowLetter)) wordHasAllYellowLetters = false;
+    });
+
+    helperData.darkGrayLetters.forEach((darkGrayLetter) => {
+      if (targetWord.includes(darkGrayLetter)) wordHasNoDarkGrayLetters = false;
+    });
+
+    if (wordHasAllYellowLetters && wordHasNoDarkGrayLetters) {
+      if (debug) console.log(targetWord);
+
+      //iterate through each letter
+      for (i; i < targetWord.length; i++) {
+        const targetLetter = targetWord.substring(i, i + 1);
+
+        if (debug) console.log("targetLetter", targetLetter, isGreenLetterMatch(targetLetter, i));
+        //Match green letter
+        numGreenMatches += isGreenLetterMatch(targetLetter, i) ? 1 : 0;
+      }
+
+      if (numGreenMatches === targetWord.length) {
+        helperData.potentialMatches.push(targetWord);
+      }
+    }
+  });
+  potentialMatchesDiv.append(helperData.potentialMatches.join(", "));
+  totalPotentialMatchesElement.innerText = helperData.potentialMatches.length;
+};
+
+const isGreenLetterMatch = (targetLetter, index) => {
+  // green letter input is empty, return true
+  if (helperData.greenLetters[index] === "") return true;
+
+  return helperData.greenLetters[index] === targetLetter;
+};
+
+const isYellowLetterMatch = (targetLetter, index) => {};
+
+//combine yellow letters
+const combineYellowLetters = () => {
+  return helperData.yellowLetters[0]
+    .concat(helperData.yellowLetters[1])
+    .concat(helperData.yellowLetters[2])
+    .concat(helperData.yellowLetters[3])
+    .concat(helperData.yellowLetters[4]);
 };
