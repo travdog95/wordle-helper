@@ -1,10 +1,7 @@
 import { targetWords } from "./targetWords.js";
+// import { targetWords } from "./targetWords-test.js";
 
 // To-Do's
-// * yellow letter logic
-// * don't allow non letters as input anywhere
-// * don't allow gray letters to be added that are already green or yellow letters
-// * don't allow green letters to be added that are gray letters
 
 //data
 let helperData = {
@@ -19,8 +16,6 @@ let helperData = {
   darkGrayLetters: [],
   potentialMatches: [],
 };
-
-const debug = false;
 
 //HTML elements
 const potentialMatchesDiv = document.querySelector(".potential-matches");
@@ -42,6 +37,14 @@ for (i; i < 5; i++) {
 }
 
 //Event listeners
+
+//All inputs
+document.querySelectorAll("input").forEach((input) => {
+  input.addEventListener("keyup", (event) => {
+    input.value = sanitize(event.target.value);
+  });
+});
+
 //Green letters
 letterInputs.forEach((letterInput) => {
   //move to next letter on keypress
@@ -86,6 +89,11 @@ letterInputs.forEach((letterInput) => {
     if (letter !== "") {
       document.querySelector(`[data-yellow-letters="${letterNum}"]`).innerHTML = "";
       helperData.yellowLetters[letterNum - 1] = [];
+
+      //remove Dark Gray letter, if it exists
+      if (helperData.darkGrayLetters.includes(letter)) {
+        removeLetter(letter, document.querySelector(`[data-dark-gray-letter="${letter}"]`));
+      }
 
       //Disable yellow Letters
       yellowLetterInput.disabled = true;
@@ -185,10 +193,15 @@ const submitDarkGrayLetters = () => {
 
 const addDarkGrayLettersToDom = (input) => {
   let i = 0;
+  const yellowLetters = combineYellowLetters();
   for (i; i < input.length; i++) {
     const darkGrayLetter = input.substring(i, i + 1);
     //If letter doesn't already exist in helperData, add to dom and helperData
-    if (!helperData.darkGrayLetters.includes(darkGrayLetter)) {
+    if (
+      !helperData.darkGrayLetters.includes(darkGrayLetter) &&
+      !yellowLetters.includes(darkGrayLetter) &&
+      !helperData.greenLetters.includes(darkGrayLetter)
+    ) {
       //add letter helperData
       helperData.darkGrayLetters.push(darkGrayLetter);
       //add letter to dom
@@ -249,6 +262,10 @@ const createLetterElement = (letter, className, letterNum) => {
   const letterHtml = document.createElement("div");
   letterHtml.classList.add("letter", `${className}`);
   letterHtml.innerText = letter.toUpperCase();
+  //Add data attribute
+  if (className.indexOf("gray") > -1) {
+    letterHtml.dataset.darkGrayLetter = letter;
+  }
   letterHtml.addEventListener("click", (event) => {
     //remove letter
     removeLetter(letter, event.target, letterNum);
@@ -285,6 +302,7 @@ const findPotentialMatches = () => {
   targetWords.forEach((targetWord) => {
     let i = 0;
     let numGreenMatches = 0;
+    let numYellowMatches = 0;
     let wordHasAllYellowLetters = true;
     let wordHasNoDarkGrayLetters = true;
 
@@ -300,18 +318,17 @@ const findPotentialMatches = () => {
     });
 
     if (wordHasAllYellowLetters && wordHasNoDarkGrayLetters) {
-      if (debug) console.log(targetWord);
-
       //iterate through each letter
       for (i; i < targetWord.length; i++) {
         const targetLetter = targetWord.substring(i, i + 1);
 
-        if (debug) console.log("targetLetter", targetLetter, isGreenLetterMatch(targetLetter, i));
         //Match green letter
         numGreenMatches += isGreenLetterMatch(targetLetter, i) ? 1 : 0;
+
+        numYellowMatches += isYellowLetterMatch(targetLetter, i) ? 1 : 0;
       }
 
-      if (numGreenMatches === targetWord.length) {
+      if (numGreenMatches === targetWord.length && numYellowMatches === targetWord.length) {
         helperData.potentialMatches.push(targetWord);
       }
     }
@@ -327,7 +344,17 @@ const isGreenLetterMatch = (targetLetter, index) => {
   return helperData.greenLetters[index] === targetLetter;
 };
 
-const isYellowLetterMatch = (targetLetter, index) => {};
+const isYellowLetterMatch = (targetLetter, index) => {
+  const yellowLetters = helperData.yellowLetters[index];
+  let reject = false;
+  if (yellowLetters.length === 0) return 1;
+
+  helperData.yellowLetters[index].forEach((yellowLetter) => {
+    if (yellowLetter === targetLetter) reject = true;
+  });
+
+  return reject ? 0 : 1;
+};
 
 //combine yellow letters
 const combineYellowLetters = () => {
