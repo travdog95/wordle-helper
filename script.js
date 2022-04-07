@@ -1,8 +1,6 @@
 import { targetWords } from "./targetWords.js";
 // import { targetWords } from "./targetWords-test.js";
 
-// To-Do's
-
 //data
 let helperData = {
   greenLetters: ["", "", "", "", ""],
