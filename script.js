@@ -127,39 +127,6 @@ yellowLetterInputs.forEach((yellowLetterInput) => {
   });
 });
 
-const submitYellowLetters = (letterNum) => {
-  const inputElement = document.getElementById(`yellowLetter${letterNum}`);
-  const input = inputElement.value;
-
-  //remove non letters and update input element
-  const sanitizedInput = sanitize(input);
-  inputElement.value = "";
-  const nextElement =
-    letterNum === 5
-      ? document.getElementById("darkGrayLetters")
-      : document.getElementById(`yellowLetter${letterNum + 1}`);
-
-  nextElement.focus();
-
-  if (sanitizedInput !== "") {
-    const yellowLettersElement = document.querySelector(`[data-yellow-letters="${letterNum}"]`);
-    let i = 0;
-    for (i; i < sanitizedInput.length; i++) {
-      const yellowLetter = sanitizedInput.substring(i, i + 1);
-      //If letter doesn't already exist in helperData, add to dom and helperData
-      if (!helperData.yellowLetters[letterNum - 1].includes(yellowLetter)) {
-        //add yellowLetter helperData
-        helperData.yellowLetters[letterNum - 1].push(yellowLetter);
-        //add yellowLetter to dom
-        const yellowLetterHtml = createLetterElement(yellowLetter, "yellow-letter", letterNum);
-        yellowLettersElement.appendChild(yellowLetterHtml);
-      }
-    }
-
-    findPotentialMatches();
-  }
-};
-
 //Dark Gray Letters
 addDarkGrayLettersButton.addEventListener("click", () => {
   submitDarkGrayLetters();
@@ -172,42 +139,6 @@ darkGrayLettersInput.addEventListener("keydown", (event) => {
     return;
   }
 });
-
-const submitDarkGrayLetters = () => {
-  const inputElement = document.getElementById("darkGrayLetters");
-  const input = inputElement.value;
-
-  //remove non letters and update input element
-  const sanitizedInput = sanitize(input);
-  inputElement.value = "";
-  inputElement.focus();
-
-  if (input !== "") {
-    addDarkGrayLettersToDom(sanitizedInput);
-
-    findPotentialMatches();
-  }
-};
-
-const addDarkGrayLettersToDom = (input) => {
-  let i = 0;
-  const yellowLetters = combineYellowLetters();
-  for (i; i < input.length; i++) {
-    const darkGrayLetter = input.substring(i, i + 1);
-    //If letter doesn't already exist in helperData, add to dom and helperData
-    if (
-      !helperData.darkGrayLetters.includes(darkGrayLetter) &&
-      !yellowLetters.includes(darkGrayLetter) &&
-      !helperData.greenLetters.includes(darkGrayLetter)
-    ) {
-      //add letter helperData
-      helperData.darkGrayLetters.push(darkGrayLetter);
-      //add letter to dom
-      const darkGrayLetterHtml = createLetterElement(darkGrayLetter, "dark-gray-letter");
-      darkGrayLettersElement.appendChild(darkGrayLetterHtml);
-    }
-  }
-};
 
 clearButton.addEventListener("click", () => {
   //Set helperData back to defaults
@@ -249,6 +180,75 @@ clearButton.addEventListener("click", () => {
   potentialMatchesDiv.innerHTML = "";
   totalPotentialMatchesElement.innerText = "";
 });
+
+const submitYellowLetters = (letterNum) => {
+  const inputElement = document.getElementById(`yellowLetter${letterNum}`);
+  const input = inputElement.value;
+
+  //remove non letters and update input element
+  const sanitizedInput = sanitize(input);
+  inputElement.value = "";
+  const nextElement =
+    letterNum === 5
+      ? document.getElementById("darkGrayLetters")
+      : document.getElementById(`yellowLetter${letterNum + 1}`);
+
+  nextElement.focus();
+
+  if (sanitizedInput !== "") {
+    const yellowLettersElement = document.querySelector(`[data-yellow-letters="${letterNum}"]`);
+    let i = 0;
+    for (i; i < sanitizedInput.length; i++) {
+      const yellowLetter = sanitizedInput.substring(i, i + 1);
+      //If letter doesn't already exist in helperData, add to dom and helperData
+      if (!helperData.yellowLetters[letterNum - 1].includes(yellowLetter)) {
+        //add yellowLetter helperData
+        helperData.yellowLetters[letterNum - 1].push(yellowLetter);
+        //add yellowLetter to dom
+        const yellowLetterHtml = createLetterElement(yellowLetter, "yellow-letter", letterNum);
+        yellowLettersElement.appendChild(yellowLetterHtml);
+      }
+    }
+
+    findPotentialMatches();
+  }
+};
+
+const submitDarkGrayLetters = () => {
+  const inputElement = document.getElementById("darkGrayLetters");
+  const input = inputElement.value;
+
+  //remove non letters and update input element
+  const sanitizedInput = sanitize(input);
+  inputElement.value = "";
+  inputElement.focus();
+
+  if (input !== "") {
+    addDarkGrayLettersToDom(sanitizedInput);
+
+    findPotentialMatches();
+  }
+};
+
+const addDarkGrayLettersToDom = (input) => {
+  let i = 0;
+  const yellowLetters = combineYellowLetters();
+  for (i; i < input.length; i++) {
+    const darkGrayLetter = input.substring(i, i + 1);
+    //If letter doesn't already exist in helperData, add to dom and helperData
+    if (
+      !helperData.darkGrayLetters.includes(darkGrayLetter) &&
+      !yellowLetters.includes(darkGrayLetter) &&
+      !helperData.greenLetters.includes(darkGrayLetter)
+    ) {
+      //add letter helperData
+      helperData.darkGrayLetters.push(darkGrayLetter);
+      //add letter to dom
+      const darkGrayLetterHtml = createLetterElement(darkGrayLetter, "dark-gray-letter");
+      darkGrayLettersElement.appendChild(darkGrayLetterHtml);
+    }
+  }
+};
 
 const sanitize = (input) => {
   //remove all non letters
